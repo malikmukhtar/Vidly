@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import Joi, { errors } from "joi-browser";
 
-class LoginForm extends Component {
+class RegisterForm extends Component {
   state = {
-    account: { username: "", password: "" },
+    account: { username: "", password: "", name: "" },
     errors: {},
   };
 
   schema = {
-    username: Joi.string().required().label("Username"),
-    password: Joi.string().required().label("Password"),
+    username: Joi.string().required().email().label("Username"),
+    password: Joi.string().required().min(5).label("Password"),
+    name: Joi.string().required().label("Name"),
   };
 
   validate = () => {
@@ -58,7 +59,7 @@ class LoginForm extends Component {
 
     return (
       <div>
-        <h1>Login</h1>
+        <h1>Register</h1>
 
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
@@ -83,10 +84,24 @@ class LoginForm extends Component {
               type="password"
               className="form-control"
             />
-            {errors && <div className="alert-danger">{errors.password}</div>}
+            {errors && (
+              <div className="alert-danger mt-1">{errors.password}</div>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Name</label>
+            <input
+              value={account.name}
+              onChange={this.handleChange}
+              id="name"
+              name="name"
+              type="text"
+              className="form-control"
+            />
+            {errors && <div className="alert-danger">{errors.name}</div>}
           </div>
           <button disabled={this.validate()} className="btn btn-primary">
-            Login
+            Register
           </button>
         </form>
       </div>
@@ -94,4 +109,4 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+export default RegisterForm;
